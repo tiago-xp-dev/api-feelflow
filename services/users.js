@@ -9,15 +9,18 @@ async function createUser(email, password, user_name) {
 }
 
 async function authenticate(email, password) {
-    model.findOne({
+    let user = await model.findOne({
         raw: true,
         where: {
             email: email,
             password: password
         }
-    }).then(user => {
-        return user == undefined
     })
+
+    if (user != undefined) {
+        return true
+    }
+    return false
 }
 
 module.exports = {

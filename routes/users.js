@@ -1,3 +1,4 @@
+const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const users = require('../services/users');
@@ -57,12 +58,20 @@ router.post('/create', async function(req, res, next) {
  *       500:
  *         description: 'Erro interno ao validar o usuário.'
  */
-/* GET user. (validation) */
-router.get('/', async function(req, res, next) {
+/* POST user. (validation) */
+router.post('/validate', async function(req, res, next) {
     try {
-        res.send('teste')
+        var { email, password } = req.body
+        let response = await users.authenticate(email, password)
+
+        if (response) {
+            res.send('Validated').status(202)
+        } else {
+            res.send('Incorrect E-mail/Password or Inexistent User').status(204)
+        }
     } catch (err) {
-        console.error('Error while getting users ')
+        console.error('Error while validating user ')
+        res.sendStatus(500)
     }
 })
 
