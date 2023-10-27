@@ -8,6 +8,9 @@ const users = require('../services/users');
  * tags:
  *   name: Users
  *   description: Manejo de Usuários
+
+/**
+ * @swagger
  * /user/create:
  *   post:
  *     summary: Cria um usuário
@@ -27,16 +30,15 @@ const users = require('../services/users');
  *         description: 'Erro interno ao criar o usuário.'
  */
 /* POST user. */
-router.post('/create', async function(req, res, next) {
+router.post('/create', async function(req, res) {
     try {
         var { email, user_name, password } = req.body
         res.json(await users.createUser(email, password, user_name)).status(200);
     } catch (err) {
-        console.error(`Error while getting users `, err.message);
-        next(err);
+        console.error('Error while creating User')
+        res.sendStatus(500)
     }
 });
-
 
 /**
  * @swagger
@@ -59,7 +61,7 @@ router.post('/create', async function(req, res, next) {
  *         description: 'Erro interno ao validar o usuário.'
  */
 /* POST user. (validation) */
-router.post('/validate', async function(req, res, next) {
+router.post('/validate', async function(req, res) {
     try {
         var { email, password } = req.body
         let response = await users.authenticate(email, password)
@@ -67,10 +69,10 @@ router.post('/validate', async function(req, res, next) {
         if (response) {
             res.send('Validated').status(202)
         } else {
-            res.send('Incorrect E-mail/Password or Inexistent User').status(204)
+            res.send('Inexistent User or Incorrect E-mail/Password').status(204)
         }
     } catch (err) {
-        console.error('Error while validating user ')
+        console.error('Error while validating user')
         res.sendStatus(500)
     }
 })
