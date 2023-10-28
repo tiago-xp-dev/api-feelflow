@@ -1,6 +1,6 @@
 const options = {
     definition: {
-        openapi: "3.1.0",
+        openapi: "3.0.0",
         definitions: {
             schemas: {
                 User: {
@@ -32,7 +32,7 @@ const options = {
                             example: "fernando@email.com"
                         }
                     }
-                },
+                }
             }
         },
         info: {

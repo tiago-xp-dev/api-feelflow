@@ -16,6 +16,7 @@ async function authenticate(email, password) {
             password: password
         }
     })
+    // TODO: SUBSTITUIR ID POR TOKEN DE AUTH
     return { id: user?.id, status: user != undefined }
 }
 

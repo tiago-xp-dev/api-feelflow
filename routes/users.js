@@ -54,12 +54,12 @@ router.post('/create', async function (req, res) {
  *           schema:
  *             $ref: '#/definitions/schemas/UserAuth'
  *     responses:
- *       202:
- *         description: 'Usuário validado.'
- *       204:
- *         description: 'Usuário inexistente ou e-mail ou senha incorretos.'
- *       500:
- *         description: 'Erro interno ao validar o usuário.'
+ *       '202':
+ *         description: Usuário validado.
+ *       '204':
+ *         description: Usuário inexistente ou e-mail ou senha incorretos.
+ *       '500':
+ *         description: Erro interno ao validar o usuário.
  */
 /* POST user. (validation) */
 router.post('/validate', async function (req, res) {
@@ -67,12 +67,12 @@ router.post('/validate', async function (req, res) {
         var { email, password } = req.body
         let response = await users.authenticate(email, password)
 
-        return res.json(response).status(202);
-
         if (response.status) {
-            res.send('Validated').status(202)
+            response.message = 'Validated'
+            res.status(202).json(response)
         } else {
-            res.send('Inexistent User or Incorrect E-mail/Password').status(204)
+            response.message = 'Inexistent User or Incorrect E-mail/Password'
+            res.status(204).json(response, status)
         }
     } catch (err) {
         console.error('Error while validating user')
