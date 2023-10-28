@@ -1,12 +1,12 @@
 const sequelize = require('sequelize')
 const connection = require('./connection')
 
-const notes = connection.define('notes', {
+const entries = connection.define('entries', {
     content: {
         type: sequelize.TEXT,
         allowNull: false
     },
-    reference_date: {
+    emission: {
         type: sequelize.DATE,
         allowNull: false
     },
@@ -20,8 +20,8 @@ const notes = connection.define('notes', {
     }
 })
 
-notes.sync({ force: false }).then(() => {
-    console.log("Tabela 'notes' \t[OK]")
+entries.sync({ force: false }).then(() => {
+    console.log("Tabela 'entries' \t[OK]")
 })
 
-module.exports = notes
+module.exports = entries

@@ -16,11 +16,7 @@ async function authenticate(email, password) {
             password: password
         }
     })
-
-    if (user != undefined) {
-        return true
-    }
-    return false
+    return { id: user?.id, status: user != undefined }
 }
 
 module.exports = {

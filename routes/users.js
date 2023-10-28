@@ -8,6 +8,7 @@ const users = require('../services/users');
  * tags:
  *   name: Users
  *   description: Manejo de Usuários
+ */
 
 /**
  * @swagger
@@ -30,7 +31,7 @@ const users = require('../services/users');
  *         description: 'Erro interno ao criar o usuário.'
  */
 /* POST user. */
-router.post('/create', async function(req, res) {
+router.post('/create', async function (req, res) {
     try {
         var { email, user_name, password } = req.body
         res.json(await users.createUser(email, password, user_name)).status(200);
@@ -61,12 +62,14 @@ router.post('/create', async function(req, res) {
  *         description: 'Erro interno ao validar o usuário.'
  */
 /* POST user. (validation) */
-router.post('/validate', async function(req, res) {
+router.post('/validate', async function (req, res) {
     try {
         var { email, password } = req.body
         let response = await users.authenticate(email, password)
 
-        if (response) {
+        return res.json(response).status(202);
+
+        if (response.status) {
             res.send('Validated').status(202)
         } else {
             res.send('Inexistent User or Incorrect E-mail/Password').status(204)
