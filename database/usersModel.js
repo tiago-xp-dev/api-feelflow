@@ -5,13 +5,13 @@ const users = connection.define('users', {
     email: {
         type: sequelize.STRING(80),
         allowNull: false,
-        unique: true,
+        unique: "user"
 
     },
     password: {
         type: sequelize.STRING(30),
         allowNull: false,
-        unique: true
+        unique: "user"
     },
     user_name: {
         type: sequelize.TEXT,

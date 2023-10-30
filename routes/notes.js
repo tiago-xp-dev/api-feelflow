@@ -1,1 +1,0 @@
-const notesModel = require('./database/notesModel')
