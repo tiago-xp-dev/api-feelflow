@@ -11,14 +11,30 @@ async function createEntry(reference_date, user_id) {
 async function removeEntry(entry_id) {
     if (!isNaN(entry_id)) {
 
-        entriesModel.destroy({
+        await entriesModel.destroy({
             where: {
                 id: entry_id
             }
+        }).then(() => {
+            return true
         })
     } else {
         return false
     }
+}
+
+async function editEntry(entry_id){
+    // TODO
+}
+
+async function getAllByUser(user_id, year){
+
+    // TODO: CONTINUAR
+    entriesModel.findAll({
+        where: {
+            user_id: user_id
+        }
+    })
 }
 
 async function addEmotionToEntry(emotion_id, entry_id, user_id) {
