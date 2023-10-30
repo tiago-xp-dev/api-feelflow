@@ -2,16 +2,22 @@ const sequelize = require('sequelize')
 const connection = require('./connection')
 
 const entries = connection.define('entries', {
-    reference_date: {
-        type: sequelize.DATE,
+    emotion_id: {
+        type: sequelize.INTEGER,
+        references: {
+            model: 'emotions',
+            key: 'id'
+        },
+        unique: "oneEmotionPerEntry",
         allowNull: false
     },
     user_id: {
         type: sequelize.INTEGER,
         references: {
-            model: 'users',
+            model: 'entries',
             key: 'id'
         },
+        unique: "oneEmotionPerEntry",
         allowNull: false
     }
 })
