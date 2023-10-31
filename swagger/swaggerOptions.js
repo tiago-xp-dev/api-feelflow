@@ -32,6 +32,18 @@ const options = {
                             example: "fernando@email.com"
                         }
                     }
+                },
+                Entry: {
+                    type: "object",
+                    properties:{
+                        reference_date:{
+                            type: "string",
+                            format: "date-time"
+                        },
+                        user_id:{
+                            type:"integer"
+                        }
+                    }
                 }
             }
         },

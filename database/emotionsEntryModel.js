@@ -1,7 +1,7 @@
 const sequelize = require('sequelize')
 const connection = require('./connection')
 
-const entries = connection.define('entries', {
+const emotions_entry = connection.define('emotions_entry', {
     emotion_id: {
         type: sequelize.INTEGER,
         references: {
@@ -14,7 +14,7 @@ const entries = connection.define('entries', {
     user_id: {
         type: sequelize.INTEGER,
         references: {
-            model: 'entries',
+            model: 'emotions_entry',
             key: 'id'
         },
         unique: "oneEmotionPerEntry",
@@ -22,8 +22,8 @@ const entries = connection.define('entries', {
     }
 })
 
-entries.sync({ force: false }).then(() => {
-    console.log("Tabela 'entries' \t[OK]")
+emotions_entry.sync({ force: false }).then(() => {
+    console.log("Tabela 'emotions_entry' \t\t[OK]")
 })
 
-module.exports = entries
+module.exports = emotions_entry

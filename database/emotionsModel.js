@@ -29,7 +29,7 @@ const emotions = connection.define('emotions', {
 })
 
 emotions.sync({ force: false }).then(() => {
-    console.log("Tabela 'emotions' \t[OK]")
+    console.log("Tabela 'emotions' \t\t[OK]")
 })
 
 module.exports = emotions

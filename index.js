@@ -17,6 +17,7 @@ const connection = require('./database/connection')
 
 // Importação das Rotas.
 const usersRoutes = require('./routes/users')
+const entriesRoutes = require('./routes/entries')
 
 // Importando o Request (realizar chamadas à APIs externas).
 const request = require('request');
@@ -28,8 +29,9 @@ app.use(bodyParser.json())
 
 // Conectando ao Banco de dados.
 connection.authenticate().then(() => {
-    console.log("Banco de dados \t[OK]")
+    console.log("Banco de dados \t\t[OK]")
 }).catch((msgErro) => {
+    console.log("Banco de dados \t\t[FAILED]")
     console.log(msgErro)
 })
 
@@ -39,8 +41,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // Inicialização das Rotas.
 app.use("/user", usersRoutes)
+app.use("/entry", entriesRoutes)
 
 app.listen(PORT, () => {
-    console.log('API \t\t[OK]')
-    console.log('Porta \t\t[' + PORT + ']')
+    console.log('API \t\t\t[OK]')
+    console.log('Porta \t\t\t[' + PORT + ']')
 })
