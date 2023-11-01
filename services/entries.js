@@ -1,15 +1,14 @@
 const entriesModel = require('../database/entriesModel')
-//const emotionsEntryModel = require('../database/emotionsEntryModel')
 const { Op } = require('sequelize')
 
-async function createEntry(reference_date, user_id) {
+async function create(reference_date, user_id) {
     entriesModel.create({
         user_id: user_id,
         reference_date: reference_date
     })
 }
 
-async function removeEntry(entry_id) {
+async function remove(entry_id) {
     if (!isNaN(entry_id)) {
 
         await entriesModel.destroy({
@@ -24,14 +23,27 @@ async function removeEntry(entry_id) {
     }
 }
 
-async function editEntry(entry_id) {
-    // TODO
+async function alter(entry_id, user_id, reference_date) {
+    entriesModel.findOne({
+        where: {
+            id: entry_id,
+            user_id: user_id
+        }
+    }).then(entry => {
+        if (entry != undefined) {
+            entry.reference_date = reference_date
+
+            entry.save();
+            return true
+        }
+
+        return false;
+    })
 }
 
-async function getAllByUser(user_id, year) {
-
-    // TODO: CONTINUAR
+async function getAll(user_id, year) {
     entriesModel.findAll({
+        raw: true,
         where: {
             user_id: user_id,
             reference_date: {
@@ -43,13 +55,22 @@ async function getAllByUser(user_id, year) {
     })
 }
 
-async function addEmotionToEntry(emotion_id, entry_id, user_id) {
-    
+async function get(user_id, entry_id) {
+    entriesModel.findOne({
+        raw: true,
+        where:{
+            user_id: user_id,
+            entry_id: entry_id,
+        }
+    }).then(entry => {
+        return entry
+    })
 }
 
 module.exports = {
-    createEntry,
-    editEntry,
-    removeEntry,
-    getAllByUser,
+    create,
+    alter,
+    remove,
+    getAll,
+    get
 }

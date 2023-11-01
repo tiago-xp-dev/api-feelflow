@@ -11,10 +11,10 @@ const emotions_entry = connection.define('emotions_entry', {
         unique: "oneEmotionPerEntry",
         allowNull: false
     },
-    user_id: {
+    entry_id: {
         type: sequelize.INTEGER,
         references: {
-            model: 'emotions_entry',
+            model: 'emotions',
             key: 'id'
         },
         unique: "oneEmotionPerEntry",
