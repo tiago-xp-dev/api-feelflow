@@ -1,6 +1,6 @@
 const options = {
-    definition: {
-        openapi: "3.0.0",
+    definition: {        
+        openapi: "3.0.0",        
         definitions: {
             schemas: {
                 User: {
@@ -50,15 +50,8 @@ const options = {
         info: {
             title: "FeelFlow API",
             version: "0.0.1",
-            description: "API do Aplicativo FeelFlow. Engenharia de Software Unifae",
-            contact: {
-                name: "Tiago Xavier de Paiva",
-                email: "tiagoxp.desenvolvedor@gmail.com",
-            },
-        },
-        servers: [{
-            url: "http://localhost:8000",
-        },],
+            description: "API do Aplicativo FeelFlow. Engenharia de Software Unifae"          
+        }        
     },
     apis: ["./routes/*.js"],
 }

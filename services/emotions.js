@@ -19,15 +19,27 @@ async function remove(emotion_id){
     })
 }
 
-async function getAllByUser(user_id){
-    return emotionsModel.findAll({
+async function getAll(user_id){
+    emotionsModel.findAll({
         raw: true,
         where: {
             user_id: user_id
         }
+    }).then(emotions => {
+        return emotions
     })
 }
 
+async function get(emotion_id){
+    emotionsModel.findOne({
+        raw: true,
+        where: {
+            emotion_id: emotion_id
+        }
+    }).then(emotion => {
+        return emotion
+    })
+}
 
 async function addEmotionToEntry(emotion_id, entry_id) {
     emotionsEntryModel.create({
@@ -36,9 +48,10 @@ async function addEmotionToEntry(emotion_id, entry_id) {
     })
 }
 
-
 module.exports = {
     create,
     remove,
-    getAllByUser
+    getAll,
+    get,
+    addEmotionToEntry
 }

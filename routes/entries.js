@@ -1,4 +1,3 @@
-const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const entries = require('../services/entries');
@@ -9,6 +8,12 @@ const moment = require('moment')
  * tags:
  *   name: Entries
  *   description: Manejo de Entradas do Diário
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Emotions
  */
 
 /**

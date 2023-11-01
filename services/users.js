@@ -1,4 +1,5 @@
 const model = require('../database/usersModel')
+const jwt = require('jsonwebtoken')
 
 async function create(email, password, user_name) {
     model.create({
@@ -16,8 +17,21 @@ async function authenticate(email, password) {
             password: password
         }
     })
-    // TODO: SUBSTITUIR ID POR TOKEN DE AUTH
-    return { id: user?.id, status: user != undefined }
+
+    if (user != undefined) {
+        var token = jwt.sign(
+            {
+                _id: user?.id,
+            },
+            // TODO: MOVER PARA ARQUIVO FORA DE ENV E REMOVER DE REPO PUBLICO
+            "TEST_SECRET_KEY",
+            {
+                expiresIn: "1d"
+            }
+        )
+    }
+
+    return { token: token, status: user != undefined }
 }
 
 module.exports = {
