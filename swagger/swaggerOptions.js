@@ -1,6 +1,6 @@
-const options = {
-    definition: {        
-        openapi: "3.0.0",        
+const specs = {
+    definition: {
+        openapi: "3.0.0",
         definitions: {
             schemas: {
                 User: {
@@ -35,13 +35,10 @@ const options = {
                 },
                 Entry: {
                     type: "object",
-                    properties:{
-                        reference_date:{
+                    properties: {
+                        reference_date: {
                             type: "string",
                             format: "date-time"
-                        },
-                        user_id:{
-                            type:"integer"
                         }
                     }
                 }
@@ -50,10 +47,29 @@ const options = {
         info: {
             title: "FeelFlow API",
             version: "0.0.1",
-            description: "API do Aplicativo FeelFlow. Engenharia de Software Unifae"          
-        }        
+            description: "API do Aplicativo FeelFlow. Engenharia de Software Unifae"
+        },
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                }
+            }
+        },
+        security: [{
+            bearerAuth: []
+        }]
     },
     apis: ["./routes/*.js"],
 }
 
-module.exports = options
+const options = {
+
+}
+
+module.exports = {
+    specs,
+    options
+}

@@ -2,6 +2,7 @@ const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const users = require('../services/users');
+const authUtils = require('../utils/authenticationUtils')
 
 /**
  * @swagger
@@ -16,6 +17,7 @@ const users = require('../services/users');
  *   post:
  *     summary: Cria um usuário
  *     tags: [Users]
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:
@@ -47,6 +49,7 @@ router.post('/create', async function (req, res) {
  *   post:
  *     summary: Valida o Login de um Usuário
  *     tags: [Users]
+ *     security: []
  *     requestBody:
  *       required: true
  *       content:

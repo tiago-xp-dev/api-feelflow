@@ -35,13 +35,13 @@ connection.authenticate().then(() => {
     console.log(msgErro)
 })
 
-// Inicialização do Swagger.
-const specs = swaggerJsdoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
-
 // Inicialização das Rotas.
 app.use("/user", usersRoutes)
 app.use("/entry", entriesRoutes)
+
+// Inicialização do Swagger.
+const specs = swaggerJsdoc(swaggerOptions.specs);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.listen(PORT, () => {
     console.log('API \t\t\t[OK]')

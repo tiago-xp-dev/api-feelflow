@@ -1,30 +1,30 @@
 const entriesModel = require('../database/entriesModel')
 const { Op } = require('sequelize')
+const moment = require('moment')
 
-async function create(reference_date, user_id) {
+async function create(user_id, reference_date) {
     entriesModel.create({
         user_id: user_id,
         reference_date: reference_date
     })
 }
 
-async function remove(entry_id) {
+async function remove(user_id, entry_id) {
     if (!isNaN(entry_id)) {
-
-        await entriesModel.destroy({
+        return await entriesModel.destroy({
             where: {
-                id: entry_id
+                id: entry_id,
+                user_id: user_id,
             }
-        }).then(() => {
-            return true
+        }).then(delete_count => {
+            return delete_count > 0
         })
-    } else {
-        return false
     }
+    return false
 }
 
-async function alter(entry_id, user_id, reference_date) {
-    entriesModel.findOne({
+async function edit(user_id, entry_id, reference_date) {
+    let result = await entriesModel.findOne({
         where: {
             id: entry_id,
             user_id: user_id
@@ -35,42 +35,49 @@ async function alter(entry_id, user_id, reference_date) {
 
             entry.save();
             return true
-        }
-
+        }      
         return false;
     })
+
+    return result
 }
 
 async function getAll(user_id, year) {
-    entriesModel.findAll({
+    let entries = await entriesModel.findAll({
         raw: true,
+        attributes: ['id', 'user_id', 'reference_date'],
         where: {
             user_id: user_id,
             reference_date: {
-                [Op.between]: [Date(`01/01/${year}`), Date(`31/12/${year}`)]
+                [Op.between]:
+                    [
+                        moment(`${year}-01-01`, 'YYYY-MM-dd').toDate(),
+                        moment(`${year}-12-31`, 'YYYY-MM-dd').toDate()
+                    ]
             }
         }
-    }).then(entries => {
-        return entries
     })
+
+    return entries
 }
 
 async function get(user_id, entry_id) {
-    entriesModel.findOne({
+    let entry = await entriesModel.findOne({
         raw: true,
-        where:{
+        attributes: ['id', 'user_id', 'reference_date'],
+        where: {
+            id: entry_id,
             user_id: user_id,
-            entry_id: entry_id,
         }
-    }).then(entry => {
-        return entry
     })
+
+    return entry
 }
 
 module.exports = {
     create,
-    alter,
+    edit,
     remove,
+    get,
     getAll,
-    get
 }
