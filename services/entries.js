@@ -43,7 +43,7 @@ async function edit(user_id, entry_id, reference_date) {
 }
 
 async function getAll(user_id, year) {
-    let entries = await entriesModel.findAll({
+    return await entriesModel.findAll({
         raw: true,
         attributes: ['id', 'user_id', 'reference_date'],
         where: {
@@ -57,8 +57,6 @@ async function getAll(user_id, year) {
             }
         }
     })
-
-    return entries
 }
 
 async function get(user_id, entry_id) {

@@ -41,6 +41,53 @@ const specs = {
                             format: "date-time"
                         }
                     }
+                },
+                ParameterEmotion: {
+                    type: "object",
+                    properties: {
+                        description: {
+                            type: "string",
+                            example: "Alegre"
+                        },
+                        intensity_weight: {
+                            type: "float",
+                            example: 1.1234,
+                        },
+                        type_id: {
+                            type: "integer",
+                            example: 0
+                        }
+                    }
+                },
+                ReturnEmotion: {
+                    type: "object",
+                    properties: {
+                        user_id: {
+                            type: "integer",
+                            example: 0,
+                        },
+                        description: {
+                            type: "string",
+                            example: "Alegre"
+                        },
+                        intensity_weight: {
+                            type: "float",
+                            example: 1.1234,
+                        },
+                        type: {
+                            type: "object",
+                            properties: {
+                                id: {
+                                    type: "integer",
+                                    example: 0,
+                                },
+                                description: {
+                                    type: "string",
+                                    example: "Felicidade",
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },

@@ -18,6 +18,7 @@ const connection = require('./database/connection')
 // Importação das Rotas.
 const usersRoutes = require('./routes/users')
 const entriesRoutes = require('./routes/entries')
+const emotionsRoutes = require('./routes/emotions')
 
 // Importando o Request (realizar chamadas à APIs externas).
 const request = require('request');
@@ -38,6 +39,7 @@ connection.authenticate().then(() => {
 // Inicialização das Rotas.
 app.use("/user", usersRoutes)
 app.use("/entry", entriesRoutes)
+app.use("/emotion", emotionsRoutes)
 
 // Inicialização do Swagger.
 const specs = swaggerJsdoc(swaggerOptions.specs);

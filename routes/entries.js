@@ -53,7 +53,7 @@ router.post('/create', async function (req, res) {
  * @swagger
  * /entry/delete/{entry_id}:
  *   delete:
- *     summary: Cria uma entrada
+ *     summary: Delete uma entrada.
  *     tags: [Entries]
  *     parameters:
  *       - in: path
@@ -72,7 +72,12 @@ router.delete('/delete/:id', async function (req, res) {
 
         if (user.validated) {
             var { id } = req.params
-            res.json(await entries.remove(user?._id, id)).status(200);
+
+            if (!isNaN) {
+                res.json(await entries.remove(user?._id, id)).status(200);
+            } else {
+                res.sendStatus(204)
+            }
         } else {
             res.sendStatus(401)
         }
@@ -149,7 +154,7 @@ router.put('/edit/:entry_id', async function (req, res) {
  *       200:
  *         description: OK
  */
- router.get('/get/:entry_id', async function (req, res) {
+router.get('/get/:entry_id', async function (req, res) {
     try {
         let user = authUtils.validateToken(req.headers.authorization)
 
@@ -168,7 +173,7 @@ router.put('/edit/:entry_id', async function (req, res) {
     } catch (err) {
         console.error('Error while fetching a Entry')
         console.error(err)
-        res.sendStatus(500);
+        res.sendStatus(500)
     }
 })
 
@@ -188,7 +193,7 @@ router.put('/edit/:entry_id', async function (req, res) {
  *       200:
  *         description: OK
  */
- router.get('/getAll/:year', async function (req, res) {
+router.get('/getAll/:year', async function (req, res) {
     try {
         let user = authUtils.validateToken(req.headers.authorization)
 

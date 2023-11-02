@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+// TODO: MOVER PARA ARQUIVO DE ENV.
 const secret_key = 'TEST_SECRET_KEY'
 
 function createToken(payload) {
