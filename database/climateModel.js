@@ -25,7 +25,7 @@ const temperatures = connection.define('temperatures', {
 })
 
 temperatures.sync({ force: false }).then(() => {
-    console.log("Tabela 'temperatures' \t[OK]")
+    console.log("Tabela 'temperatures'\t\t\t\t[OK]")
 })
 
 module.exports = temperatures

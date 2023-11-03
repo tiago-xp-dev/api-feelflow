@@ -32,13 +32,21 @@ router.post('/create', async (req, res) => {
         let user = authUtils.validateToken(req.headers.authorization)
 
         if (user.validated) {
-            let { description, intensity_weight, type_id } = req.body
+            let {
+                description,
+                primary_type,
+                primary_weight,
+                secondary_type,
+                secondary_weight
+            } = req.body
 
             await emotionModel.create(
                 user?._id,
                 description,
-                intensity_weight,
-                type_id
+                primary_type,
+                primary_weight,
+                secondary_type,
+                secondary_weight,
             )
 
             res.sendStatus(200);
@@ -162,7 +170,7 @@ router.get('/get/:emotion_id', async (req, res) => {
 
         if (user.validated) {
             let { emotion_id } = req.params
-            if(!isNaN(emotion_id)){
+            if (!isNaN(emotion_id)) {
                 let result = await emotionModel.get(user?._id, emotion_id)
 
                 res.json(result).status(200)
@@ -187,21 +195,18 @@ router.get('/get/:emotion_id', async (req, res) => {
  *       200:
  *         description: OK
  */
- router.get('/get/:emotion_id', async (req, res) => {
+router.get('/getAll', async (req, res) => {
     try {
         let user = authUtils.validateToken(req.headers.authorization)
 
         if (user.validated) {
-            let { emotion_id } = req.params
-            if(!isNaN(emotion_id)){
-                let result = await emotionModel.getAll(user?._id)
+            let result = await emotionModel.getAll(user?._id)
 
-                res.json(result).status(200)
-            }
+            res.json(result).status(200)
         } else {
             res.sendStatus(401)
         }
-    } catch (error) {
+    } catch (err) {
         console.log('Error while fetching all Emotions')
         console.log(err)
         res.sendStatus(500)

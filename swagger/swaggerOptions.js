@@ -49,13 +49,21 @@ const specs = {
                             type: "string",
                             example: "Alegre"
                         },
-                        intensity_weight: {
+                        primary_type_id: {
+                            type: "integer",
+                            example: 1,
+                        },
+                        primary_weight: {
                             type: "float",
                             example: 1.1234,
                         },
-                        type_id: {
+                        secondary_type_id: {
                             type: "integer",
-                            example: 0
+                            example: 3,
+                        },
+                        secondary_weight: {
+                            type: "float",
+                            example: 1.1234,
                         }
                     }
                 },
@@ -70,22 +78,39 @@ const specs = {
                             type: "string",
                             example: "Alegre"
                         },
-                        intensity_weight: {
-                            type: "float",
-                            example: 1.1234,
-                        },
-                        type: {
+                        primary_type: {
                             type: "object",
                             properties: {
                                 id: {
                                     type: "integer",
-                                    example: 0,
+                                    example: 1,
                                 },
                                 description: {
                                     type: "string",
-                                    example: "Felicidade",
+                                    example: "Energizado",
                                 }
                             }
+                        },
+                        primary_weight: {
+                            type: "float",
+                            example: 1.1234,
+                        },
+                        secondary_type: {
+                            type: "object",
+                            properties: {
+                                id: {
+                                    type: "integer",
+                                    example: 3,
+                                },
+                                description: {
+                                    type: "string",
+                                    example: "Agradável",
+                                }
+                            }
+                        },
+                        secondary_weight: {
+                            type: "float",
+                            example: 1.1234,
                         }
                     }
                 }

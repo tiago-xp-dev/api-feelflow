@@ -17,7 +17,7 @@ const musics = connection.define('musics', {
 })
 
 musics.sync({ force: false }).then(() => {
-    console.log("Tabela 'musics' \t[OK]")
+    console.log("Tabela 'musics'\t\t\t\t[OK]")
 })
 
 module.exports = musics

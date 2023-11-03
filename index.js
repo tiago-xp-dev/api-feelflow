@@ -30,9 +30,9 @@ app.use(bodyParser.json())
 
 // Conectando ao Banco de dados.
 connection.authenticate().then(() => {
-    console.log("Banco de dados \t\t[OK]")
+    console.log("Banco de dados\t\t\t\t\t[OK]")
 }).catch((msgErro) => {
-    console.log("Banco de dados \t\t[FAILED]")
+    console.log("Banco de dados\t\t\t\t\t[FAILED]")
     console.log(msgErro)
 })
 
@@ -46,6 +46,6 @@ const specs = swaggerJsdoc(swaggerOptions.specs);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.listen(PORT, () => {
-    console.log('API \t\t\t[OK]')
-    console.log('Porta \t\t\t[' + PORT + ']')
+    console.log('API\t\t\t\t\t\t[OK]')
+    console.log('Porta\t\t\t\t\t\t[' + PORT + ']')
 })

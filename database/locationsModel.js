@@ -25,7 +25,7 @@ const locations = connection.define('locations', {
 })
 
 locations.sync({ force: false }).then(() => {
-    console.log("Tabela 'locations' \t[OK]")
+    console.log("Tabela 'locations'\t\t\t\t[OK]")
 })
 
 module.exports = locations

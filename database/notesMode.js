@@ -25,7 +25,7 @@ const notes = connection.define('notes', {
 })
 
 notes.sync({ force: false }).then(() => {
-    console.log("Tabela 'notes' \t[OK]")
+    console.log("Tabela 'notes'\t\t\t\t[OK]")
 })
 
 module.exports = notes

@@ -20,7 +20,7 @@ const users = connection.define('users', {
 })
 
 users.sync({ force: false }).then(() => {
-    console.log("Tabela 'users' \t\t[OK]")
+    console.log("Tabela 'users'\t\t\t\t\t[OK]")
 })
 
 module.exports = users
