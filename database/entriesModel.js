@@ -1,7 +1,5 @@
 const sequelize = require('sequelize')
 const connection = require('./connection')
-const emotions = require('./emotionsModel')
-const entriesEmotions = require('./emotionsEntryModel')
 
 const entries = connection.define('entries', {
     reference_date: {
@@ -17,8 +15,6 @@ const entries = connection.define('entries', {
         allowNull: false
     }
 })
-
-emotions.belongsToMany(entries, {through: 'entries_emotions'})
 
 entries.sync({ force: false }).then(() => {
     console.log("Tabela 'entries'\t\t\t\t[OK]")

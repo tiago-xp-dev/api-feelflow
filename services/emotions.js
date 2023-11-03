@@ -1,3 +1,7 @@
+// TODO: REALIZAR A DOCUMENTAÇÃO SWAGGER ADEQUADAMENTE 
+//       E MELHORAR OS RETORNOS DOS ENDPOINTS PARA 
+//       ALGUMA FORMA PADROZINADA AFIM DE FACILITAR O CONSUMO
+
 const emotionTypesModel = require('../database/emotionTypesModel')
 const emotionsModel = require('../database/emotionsModel')
 const stringUtils = require('../utils/stringUtils')
@@ -63,7 +67,7 @@ async function remove(user_id, emotion_id) {
 }
 
 async function getAll(user_id) {
-    if (!isNaN(user_id), !isNaN(emotion_id)) {
+    if (!isNaN(user_id)) {
         return await emotionsModel.findAll({
             attributes: ['id', 'description', 'primary_weight', 'secondary_weight', 'user_id'],
             where: {

@@ -1,6 +1,8 @@
-const entriesModel = require('../database/entriesModel')
 const { Op } = require('sequelize')
 const moment = require('moment')
+const entriesModel = require('../database/entriesModel')
+const emotionModel = require('../database/emotionsModel')
+const emotionTypesModel = require('../database/emotionTypesModel')
 
 async function create(user_id, reference_date) {
     entriesModel.create({
@@ -35,7 +37,7 @@ async function edit(user_id, entry_id, reference_date) {
 
             entry.save();
             return true
-        }      
+        }
         return false;
     })
 
@@ -61,12 +63,23 @@ async function getAll(user_id, year) {
 
 async function get(user_id, entry_id) {
     let entry = await entriesModel.findOne({
-        raw: true,
         attributes: ['id', 'user_id', 'reference_date'],
         where: {
             id: entry_id,
             user_id: user_id,
-        }
+        },
+        include:
+            [
+                {
+                    // TODO : LIMPAR O CONTEÚDO DA APLICAÇÃO.
+                    model: emotionModel,
+                    as: 'emotions',
+                    include: [
+                        { model: emotionTypesModel, as: 'primary_type' },
+                        { model: emotionTypesModel, as: 'secondary_type' }
+                    ]
+                }
+            ]
     })
 
     return entry
