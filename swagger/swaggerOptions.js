@@ -113,6 +113,15 @@ const specs = {
                             example: 1.1234,
                         }
                     }
+                },
+                ParameterNote: {
+                    type: "object",
+                    properties: {
+                        content: {
+                            type: "string",
+                            example: "Olá mundo, Hoje acordei feliz por estar aqui :)"
+                        },
+                    }
                 }
             }
         },

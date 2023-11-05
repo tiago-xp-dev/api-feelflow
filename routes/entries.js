@@ -82,7 +82,7 @@ router.delete('/delete/:id', async function (req, res) {
             res.sendStatus(401)
         }
     } catch (err) {
-        console.error('Error while creating Entry')
+        console.error('Error while deleting Entry')
         res.sendStatus(500)
     }
 });

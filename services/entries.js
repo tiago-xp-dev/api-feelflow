@@ -1,8 +1,9 @@
 const { Op } = require('sequelize')
 const moment = require('moment')
 const entriesModel = require('../database/entriesModel')
-const emotionModel = require('../database/emotionsModel')
+const emotionsModel = require('../database/emotionsModel')
 const emotionTypesModel = require('../database/emotionTypesModel')
+const notesModel = require('../database/notesModel')
 
 async function create(user_id, reference_date) {
     entriesModel.create({
@@ -71,13 +72,19 @@ async function get(user_id, entry_id) {
         include:
             [
                 {
-                    // TODO : LIMPAR O CONTEÚDO DA APLICAÇÃO.
-                    model: emotionModel,
+                    model: emotionsModel,
                     as: 'emotions',
+                    through: { attributes: [] },
+                    attributes: ['id','description','primary_type_id','primary_weight','secondary_type_id','secondary_weight','user_id'],
                     include: [
                         { model: emotionTypesModel, as: 'primary_type' },
                         { model: emotionTypesModel, as: 'secondary_type' }
                     ]
+                },
+                {
+                    model: notesModel,
+                    as: 'note',
+                    attributes: ['content']
                 }
             ]
     })

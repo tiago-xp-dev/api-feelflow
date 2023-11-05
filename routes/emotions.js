@@ -1,5 +1,5 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const emotionModel = require('../services/emotions');
 const authUtils = require('../utils/authenticationUtils')
 const strUtils = require('../utils/stringUtils')
@@ -129,7 +129,7 @@ router.put('/edit/{emotion_id}', async (req, res) => {
             let { emotion_id } = req.params
             let { description, intensity_weight, type_id } = req.body
 
-            if (!isNaN(emotion_id) && strUtils.isNullOrEmpty(description) && !isNaN(intensity_weight) && !isNaN(type_id)) {
+            if (!isNaN(emotion_id) && !strUtils.isNullOrEmpty(description) && !isNaN(intensity_weight) && !isNaN(type_id)) {
                 if (await emotionModel.edit(user?._id, emotion_id, description, intensity_weight, type_id)) {
                     res.sendStatus(200)
                 } else {

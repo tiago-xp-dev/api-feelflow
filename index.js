@@ -20,15 +20,16 @@ const usersModel = require('./database/usersModel'),
     entriesModel = require('./database/entriesModel'),    
     emotionsModel = require('./database/emotionsModel'),
     emotionTypesModel = require('./database/emotionTypesModel'),
-    emotionsEntryModel = require('./database/emotionsEntryModel')
-    //notesModel = require('./database/notesModel'),
+    emotionsEntryModel = require('./database/emotionsEntryModel'),
+    notesModel = require('./database/notesModel')
     //locationsModel = require('./database/locationsModel'),
 
 // Importação das Rotas.
 const usersRoutes = require('./routes/users'),
     entriesRoutes = require('./routes/entries'),
     emotionsRoutes = require('./routes/emotions'),
-    compositionRoutes = require('./routes/composition')
+    compositionRoutes = require('./routes/composition'),
+    notesRoutes = require('./routes/notes')
 
 // Importando o Request (realizar chamadas à APIs externas).
 const request = require('request');
@@ -51,6 +52,7 @@ app.use('/user', usersRoutes)
 app.use('/entry', entriesRoutes)
 app.use('/emotion', emotionsRoutes)
 app.use('/composition', compositionRoutes)
+app.use('/note', notesRoutes)
 
 // Inicialização do Swagger.
 const specs = swaggerJsdoc(swaggerOptions.specs);
