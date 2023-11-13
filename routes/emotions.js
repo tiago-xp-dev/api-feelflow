@@ -25,7 +25,15 @@ const strUtils = require('../utils/stringUtils')
  *             $ref: '#/definitions/schemas/ParameterEmotion'
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       403:
+ *         description: 'Operação não permitida.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
  */
 router.post('/create', async (req, res) => {
     try {
@@ -40,16 +48,21 @@ router.post('/create', async (req, res) => {
                 secondary_weight
             } = req.body
 
-            await emotionModel.create(
-                user?._id,
-                description,
-                primary_type,
-                primary_weight,
-                secondary_type,
-                secondary_weight,
-            )
+            if (!isNaN(emotion_id) && !strUtils.isNullOrEmpty(description) && !isNaN(intensity_weight) && !isNaN(type_id)) {
 
-            res.sendStatus(200);
+                await emotionModel.create(
+                    user?._id,
+                    description,
+                    primary_type,
+                    primary_weight,
+                    secondary_type,
+                    secondary_weight,
+                )
+
+                res.sendStatus(200);
+            }else{
+                res.sendStatus(400)
+            }
         } else {
             res.sendStatus(401)
         }
@@ -75,7 +88,17 @@ router.post('/create', async (req, res) => {
  *         description: Valor numérico representando o Id da emoção a ser removida
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       204:
+ *         description: 'O alvo desta operação não foi encontrado.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       403:
+ *         description: 'Operação não permitida.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
  */
 router.delete('/delete/:id', async (req, res) => {
     try {
@@ -119,7 +142,15 @@ router.delete('/delete/:id', async (req, res) => {
  *             $ref: '#/definitions/schemas/ParameterEmotion'
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       204:
+ *         description: 'O alvo desta operação não foi encontrado.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
  */
 router.put('/edit/{emotion_id}', async (req, res) => {
     try {
@@ -162,7 +193,19 @@ router.put('/edit/{emotion_id}', async (req, res) => {
  *         required: true
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
+ *       'default':
+ *         description: 'Retorno'
+ *         content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/definitions/schemas/ReturnEmotion'
  */
 router.get('/get/:emotion_id', async (req, res) => {
     try {
@@ -174,6 +217,8 @@ router.get('/get/:emotion_id', async (req, res) => {
                 let result = await emotionModel.get(user?._id, emotion_id)
 
                 res.json(result).status(200)
+            }else{
+                res.sendStatus(400)
             }
         } else {
             res.sendStatus(401)
@@ -193,7 +238,19 @@ router.get('/get/:emotion_id', async (req, res) => {
  *     tags: [Emotions]
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
+ *       'default':
+ *         description: 'Retorno'
+ *         content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/definitions/schemas/ReturnEmotion'
  */
 router.get('/getAll', async (req, res) => {
     try {

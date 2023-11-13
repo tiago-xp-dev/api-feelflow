@@ -4,6 +4,7 @@ const entriesModel = require('../database/entriesModel')
 const emotionsModel = require('../database/emotionsModel')
 const emotionTypesModel = require('../database/emotionTypesModel')
 const notesModel = require('../database/notesModel')
+const imagesModel = require('../database/imagesModel')
 
 async function create(user_id, reference_date) {
     entriesModel.create({
@@ -13,17 +14,14 @@ async function create(user_id, reference_date) {
 }
 
 async function remove(user_id, entry_id) {
-    if (!isNaN(entry_id)) {
-        return await entriesModel.destroy({
-            where: {
-                id: entry_id,
-                user_id: user_id,
-            }
-        }).then(delete_count => {
-            return delete_count > 0
-        })
-    }
-    return false
+    return await entriesModel.destroy({
+        where: {
+            id: entry_id,
+            user_id: user_id,
+        }
+    }).then(delete_count => {
+        return delete_count > 0
+    })
 }
 
 async function edit(user_id, entry_id, reference_date) {
@@ -85,6 +83,11 @@ async function get(user_id, entry_id) {
                     model: notesModel,
                     as: 'note',
                     attributes: ['content']
+                },
+                {
+                    model: imagesModel,
+                    as: 'images',
+                    attributes: ['id']
                 }
             ]
     })

@@ -1,8 +1,7 @@
-const { response } = require('express');
 const express = require('express');
 const router = express.Router();
 const users = require('../services/users');
-const authUtils = require('../utils/authenticationUtils')
+const strUtils = require('../utils/stringUtils')
 
 /**
  * @swagger
@@ -29,6 +28,8 @@ const authUtils = require('../utils/authenticationUtils')
  *         description: 'Usuário criado com sucesso.'
  *       409:
  *         description: 'E-mail já em uso.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos'
  *       500:
  *         description: 'Erro interno ao criar o usuário.'
  */
@@ -36,7 +37,18 @@ const authUtils = require('../utils/authenticationUtils')
 router.post('/create', async function (req, res) {
     try {
         var { email, user_name, password } = req.body
-        res.json(await users.createUser(email, password, user_name)).status(200);
+
+        if(!strUtils.isNullOrEmpty(email) &&
+         !strUtils.isNullOrEmpty(user_name) &&
+         !strUtils.isNullOrEmpty(password)){
+            if(await users.createUser(email, password, user_name)){
+                res.sendStatus(200)
+            }else{
+                res.sendStatus(409)
+            }
+        }else{
+            res.sendStatus(400)
+        }        
     } catch (err) {
         console.error('Error while creating User')
         res.sendStatus(500)
@@ -58,11 +70,17 @@ router.post('/create', async function (req, res) {
  *             $ref: '#/definitions/schemas/UserAuth'
  *     responses:
  *       '202':
- *         description: Usuário validado.
+ *         description: 'Usuário validado.'
  *       '204':
- *         description: Usuário inexistente ou e-mail ou senha incorretos.
+ *         description: 'Usuário inexistente ou e-mail ou senha incorretos.'
  *       '500':
- *         description: Erro interno ao validar o usuário.
+ *         description: 'Erro interno ao validar o usuário.'
+ *       'default':
+ *         description: 'Retorno da validação'
+ *         content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/definitions/schemas/UserAuthReturn'
  */
 /* POST user. (validation) */
 router.post('/validate', async function (req, res) {
@@ -72,13 +90,14 @@ router.post('/validate', async function (req, res) {
 
         if (response.status) {
             response.message = 'Validated'
-            res.status(202).json(response)
+            res.json(response).status(202)
         } else {
             response.message = 'Inexistent User or Incorrect E-mail/Password'
-            res.status(204).json(response, status)
+            res.json(response).status(204)
         }
     } catch (err) {
         console.error('Error while validating user')
+        console.error(err)
         res.sendStatus(500)
     }
 })

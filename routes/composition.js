@@ -31,7 +31,13 @@ const entryCompositionModel = require('../services/entryComposition')
  *         description: Valor numérico representando o ID da Emoção
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
  */
 router.post('/entry/:entry_id/emotion/:emotion_id', async (req, res) => {
     try {
@@ -40,9 +46,12 @@ router.post('/entry/:entry_id/emotion/:emotion_id', async (req, res) => {
         if (user.validated) {
             let { emotion_id, entry_id } = req.params
 
-            await entryCompositionModel.addEmotionToEntry(emotion_id, entry_id)
-
-            res.sendStatus(200);
+            if(!isNaN(emotion_id) && !isNaN(entry_id)){
+                await entryCompositionModel.addEmotionToEntry(emotion_id, entry_id)
+                res.sendStatus(200)
+            }else{
+                res.sendStatus(400)
+            }
         } else {
             res.sendStatus(401)
         }
@@ -72,8 +81,15 @@ router.post('/entry/:entry_id/emotion/:emotion_id', async (req, res) => {
  *           type: integer
  *         required: true
  *         description: Valor numérico representando o ID da Emoção
- *     200:
- *       description: OK
+ *     responses:
+ *       200:
+ *         description: 'Operação realizada com Sucesso.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
  */
  router.delete('/entry/:{entry_id}/emotion/:{emotion_id}', async (req, res) => {
     try {
@@ -82,9 +98,12 @@ router.post('/entry/:entry_id/emotion/:emotion_id', async (req, res) => {
         if (user.validated) {
             let { emotion_id, entry_id } = req.params
 
-            await entryCompositionModel.removeEmotionFromEntry(emotion_id, entry_id)
-
-            res.sendStatus(200);
+            if(!isNaN(emotion_id) && !isNaN(entry_id)){
+                await entryCompositionModel.removeEmotionFromEntry(emotion_id, entry_id)
+                res.sendStatus(200);
+            }else{
+                res.sendStatus(400)
+            }
         } else {
             res.sendStatus(401)
         }

@@ -1,7 +1,3 @@
-// TODO: REALIZAR A DOCUMENTAÇÃO SWAGGER ADEQUADAMENTE 
-//       E MELHORAR OS RETORNOS DOS ENDPOINTS PARA 
-//       ALGUMA FORMA PADROZINADA AFIM DE FACILITAR O CONSUMO
-
 const express = require('express');
 const router = express.Router();
 const entries = require('../services/entries');
@@ -29,7 +25,13 @@ const moment = require('moment')
  *             $ref: '#/definitions/schemas/Entry'
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
  */
 router.post('/create', async function (req, res) {
     try {
@@ -37,7 +39,11 @@ router.post('/create', async function (req, res) {
 
         if (user.validated) {
             let { reference_date } = req.body
-            res.json(await entries.create(user?._id, reference_date)).status(200);
+            if(moment(reference_date).isValid()){
+                res.json(await entries.create(user?._id, reference_date)).status(200);
+            }else{
+                res.sendStatus(400)
+            }
         } else {
             res.sendStatus(401)
         }
@@ -64,7 +70,15 @@ router.post('/create', async function (req, res) {
  *         description: Valor numérico representando o ID da entrada a ser removida
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       204:
+ *         description: 'O alvo desta operação não foi encontrado.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
  */
 router.delete('/delete/:id', async function (req, res) {
     try {
@@ -73,10 +87,14 @@ router.delete('/delete/:id', async function (req, res) {
         if (user.validated) {
             var { id } = req.params
 
-            if (!isNaN) {
-                res.json(await entries.remove(user?._id, id)).status(200);
+            if (!isNaN(id)) {
+                if(await entries.remove(user?._id, id)){
+                    res.sendStatus(200)
+                }else{
+                    res.sendStatus(204)
+                }                
             } else {
-                res.sendStatus(204)
+                res.sendStatus(400)
             }
         } else {
             res.sendStatus(401)
@@ -110,7 +128,15 @@ router.delete('/delete/:id', async function (req, res) {
  *                 format: date-time
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       204:
+ *         description: 'O alvo desta operação não foi encontrado.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
  */
 router.put('/edit/:entry_id', async function (req, res) {
     try {
@@ -152,7 +178,19 @@ router.put('/edit/:entry_id', async function (req, res) {
  *         required: true
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
+ *       'default':
+ *         description: 'Retorno'
+ *         content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/definitions/schemas/ReturnEntry'
  */
 router.get('/get/:entry_id', async function (req, res) {
     try {
@@ -191,7 +229,19 @@ router.get('/get/:entry_id', async function (req, res) {
  *         required: true
  *     responses:
  *       200:
- *         description: OK
+ *         description: 'Operação realizada com Sucesso.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
+ *       'default':
+ *         description: 'Retorno'
+ *         content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/definitions/schemas/ReturnEntries'
  */
 router.get('/getAll/:year', async function (req, res) {
     try {

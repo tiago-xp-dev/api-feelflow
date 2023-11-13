@@ -2,10 +2,14 @@ const model = require('../database/usersModel')
 const jwt = require('jsonwebtoken')
 
 async function create(email, password, user_name) {
-    model.create({
+    return await model.create({
         email: email,
         password: password,
         user_name: user_name
+    }).then(_ =>{
+        return true
+    }).catch(_ => {
+      return false
     })
 }
 

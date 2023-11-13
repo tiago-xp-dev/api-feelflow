@@ -1,22 +1,23 @@
 const express = require('express')
+const multer = require('multer')
+const images = require('../services/images')
 const router = express.Router()
-const notes = require('../services/notes')
+const upload = multer()
 const authUtils = require('../utils/authenticationUtils')
-const strUtils = require('../utils/stringUtils')
 
 /**
  * @swagger
  * tags:
- *   name: Notes
- *   description: Manejo de Anotações do Diário
+ *   name: Images
+ *   description: Manejo de Imagens do Diário
  */
 
 /**
  * @swagger
- * /note/create/{entry_id}:
+ * /image/upload/{entry_id}:
  *   post:
- *     summary: Cria uma anotação para a entrada especificada
- *     tags: [Notes]
+ *     summary: Adiciona uma Imagem para uma Entrada
+ *     tags: [Images]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -26,57 +27,61 @@ const strUtils = require('../utils/stringUtils')
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/definitions/schemas/ParameterNote'
+ *             type: object
+ *             properties:
+ *               fileName:
+ *                 type: string
+ *                 format: base64
  *     responses:
  *       200:
  *         description: 'Operação realizada com Sucesso.'
  *       400:
  *         description: 'Parâmetros fornecidos são inválidos.'
- *       403:
- *         description: 'Operação não permitida.'
  *       401:
  *         description: 'Não autorizado, ou token expirado.'
  *       500:
  *         description: 'Erro interno.'
  */
-router.post('/create/:entry_id', async function (req, res) {
+router.post('/upload/:entry_id', upload.any(), async function (req, res) {
     try {
         let user = authUtils.validateToken(req.headers.authorization)
 
-        if (user.validated) {
-            let { entry_id } = req.params
-            let { content } = req.body
-
-            if (!isNaN(entry_id) && !strUtils.isNull(content)) {
-                if (await notes.create(user?._id, entry_id, content)) {
-                    res.sendStatus(200)
-                } else {
-                    res.sendStatus(403)
-                }
-            } else {
+        if (user.validated) {      
+            let {entry_id } = req.params      
+            let file = req.files[0]
+            if(file != undefined && file.mimetype == 'image/png' ||file.mimetype == 'image/jpeg'){
+                images.create(user?._id, entry_id, file.buffer)
+            }else{
                 res.sendStatus(400)
             }
+            res.sendStatus(200)
         } else {
             res.sendStatus(401)
         }
     } catch (err) {
-        console.error('Error while creating Note')
+        console.error('Error while creating Entry')
         console.log(err)
         res.sendStatus(500)
     }
-})
+});
+
 
 /**
  * @swagger
- * /note/get/{entry_id}:
+ * /image/get/{entry_id}/{image_id}:
  *   get:
- *     summary: Obtem a anotação de um identificador de entrada especificado.
- *     tags: [Notes]
+ *     summary: Lê as Imagens de uma Entrada
+ *     tags: [Images]
  *     parameters:
  *       - in: path
  *         name: entry_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *       - in: path
+ *         name: image_id
  *         schema:
  *           type: integer
  *         required: true
@@ -89,22 +94,62 @@ router.post('/create/:entry_id', async function (req, res) {
  *         description: 'Não autorizado, ou token expirado.'
  *       500:
  *         description: 'Erro interno.'
- *       'default':
- *         description: 'Retorno'
- *         content:
- *             application/json:
- *               schema:
- *                 $ref: '#/definitions/schemas/ReturnNote'
  */
-router.get('/get/:entry_id', async function (req, res) {
+ router.get('/get/:entry_id/:image_id', async function (req, res) {
     try {
         let user = authUtils.validateToken(req.headers.authorization)
 
-        if (user.validated) {
+        if (user.validated) {            
+            let { entry_id, image_id } = req.params
+            if (!isNaN(entry_id) && !isNaN(image_id)) {
+                let result = await images.read(user?._id, entry_id, image_id)
+                res.contentType('image/png')
+                res.send(result.image).status(200)
+            } else {
+                res.sendStatus(400)
+            }
+        } else {
+            res.sendStatus(401)
+        }
+    } catch (err) {
+        console.error('Error while creating Entry')
+        console.log(err)
+        res.sendStatus(500)
+    }
+});
+
+/**
+ * @swagger
+ * /image/getIds/{entry_id}:
+ *   get:
+ *     summary: Lê os Identificadores das Imagens de uma Entrada
+ *     tags: [Images]
+ *     parameters:
+ *       - in: path
+ *         name: entry_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: 'Operação realizada com Sucesso.'
+ *       204:
+ *         description: 'O alvo desta operação não foi encontrado.'
+ *       400:
+ *         description: 'Parâmetros fornecidos são inválidos.'
+ *       401:
+ *         description: 'Não autorizado, ou token expirado.'
+ *       500:
+ *         description: 'Erro interno.'
+ */
+ router.get('/getIds/:entry_id', async function (req, res) {
+    try {
+        let user = authUtils.validateToken(req.headers.authorization)
+
+        if (user.validated) {            
             let { entry_id } = req.params
             if (!isNaN(entry_id)) {
-                let result = await notes.read(user?._id, entry_id)
-
+                let result = await images.readIds(user?._id, entry_id)
                 res.json(result).status(200)
             } else {
                 res.sendStatus(400)
@@ -113,102 +158,43 @@ router.get('/get/:entry_id', async function (req, res) {
             res.sendStatus(401)
         }
     } catch (err) {
-        console.error('Error while fetching Note')
+        console.error('Error while creating Entry')
         console.log(err)
         res.sendStatus(500)
     }
-})
+});
 
 /**
  * @swagger
- * /note/edit/{entry_id}:
- *   put:
- *     summary: Altera uma anotação de uma entrada pelo Id especificado.
- *     tags: [Notes]
- *     parameters:
- *       - in: path
- *         name: entry_id
- *         schema:
- *           type: integer
- *         required: true
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/definitions/schemas/ParameterNote'
- *     responses:
- *       200:
- *         description: 'Operação realizada com Sucesso.'
- *       204:
- *         description: 'O alvo desta operação não foi encontrado.'
- *       400:
- *         description: 'Parâmetros fornecidos são inválidos.'
- *       401:
- *         description: 'Não autorizado, ou token expirado.'
- *       500:
- *         description: 'Erro interno.'
- */
-router.put('/edit/:entry_id', async function (req, res) {
-    try {
-        let user = authUtils.validateToken(req.headers.authorization)
-
-        if (user.validated) {
-            let { entry_id } = req.params
-            let { content } = req.body
-
-            if (!isNaN(entry_id) && !strUtils.isNull(content)) {
-                if (await notes.update(user?._id, entry_id, content)) {
-                    res.sendStatus(200)
-                } else {
-                    res.sendStatus(204)
-                }
-            } else {
-                res.sendStatus(400)
-            }
-        } else {
-            res.sendStatus(401)
-        }
-    } catch (error) {
-        console.error('Error while altering Note')
-        console.log(err)
-        res.sendStatus(500)
-    }
-})
-
-/**
- * @swagger
- * /note/delete/{entry_id}:
+ * /image/delete/{entry_id}/{image_id}:
  *   delete:
- *     summary: Delete a anotação de uma entrada.
- *     tags: [Notes]
+ *     summary: Deleta uma Imagem de uma entrada.
+ *     tags: [Images]
  *     parameters:
  *       - in: path
  *         name: entry_id
  *         schema:
  *           type: integer
  *         required: true
- *         description: Valor numérico representando o ID da entrada da anotação a ser removida.
+ *         description: Valor numérico representando o ID da entrada da Imagem a ser removida.
+ *       - in: path
+ *         name: image_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: Valor numérico representando o ID da Imagem a ser removida.
  *     responses:
  *       200:
- *         description: 'Operação realizada com Sucesso.'
- *       204:
- *         description: 'O alvo desta operação não foi encontrado.'
- *       400:
- *         description: 'Parâmetros fornecidos são inválidos.'
- *       401:
- *         description: 'Não autorizado, ou token expirado.'
- *       500:
- *         description: 'Erro interno.'
+ *         description: OK
  */
-router.delete('/delete/:entry_id', async function (req, res) {
+ router.delete('/delete/:entry_id/:image_id', async function (req, res) {
     try {
         let user = authUtils.validateToken(req.headers.authorization)
 
         if (user.validated) {
-            let { entry_id } = req.params
+            let { entry_id, image_id } = req.params
             if (!isNaN(entry_id)) {
-                if (notes.destroy(user?._id, entry_id)) {
+                if (images.destroy(user?._id, entry_id, image_id)) {
                     res.sendStatus(200)
                 } else {
                     res.sendStatus(204)
@@ -220,8 +206,8 @@ router.delete('/delete/:entry_id', async function (req, res) {
             res.sendStatus(401)
         }
     } catch (err) {
-        console.error('Error while fetching Note')
-        console.error(err)
+        console.error('Error deleting Image')
+        console.log(err)
         res.sendStatus(500)
     }
 })
