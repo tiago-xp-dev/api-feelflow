@@ -23,7 +23,6 @@ const usersModel = require('./database/usersModel'),
     emotionsEntryModel = require('./database/emotionsEntryModel'),
     notesModel = require('./database/notesModel'),
     imagesModel = require('./database/imagesModel')
-    //locationsModel = require('./database/locationsModel'),
 
 // Importação das Rotas.
 const usersRoutes = require('./routes/users'),
