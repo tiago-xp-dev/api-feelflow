@@ -7,16 +7,16 @@ const strUtils = require('../utils/stringUtils')
 /**
  * @swagger
  * tags:
- *   name: Notes
+ *   name: Anotações
  *   description: Manejo de Anotações do Diário
  */
 
 /**
  * @swagger
- * /note/create/{entry_id}:
+ * /anotacoes/create/{entry_id}:
  *   post:
  *     summary: Cria uma anotação para a entrada especificada
- *     tags: [Notes]
+ *     tags: [Anotações]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -70,10 +70,10 @@ router.post('/create/:entry_id', async function (req, res) {
 
 /**
  * @swagger
- * /note/get/{entry_id}:
+ * /anotacoes/get/{entry_id}:
  *   get:
  *     summary: Obtem a anotação de um identificador de entrada especificado.
- *     tags: [Notes]
+ *     tags: [Anotações]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -121,10 +121,10 @@ router.get('/get/:entry_id', async function (req, res) {
 
 /**
  * @swagger
- * /note/edit/{entry_id}:
+ * /anotacoes/edit/{entry_id}:
  *   put:
  *     summary: Altera uma anotação de uma entrada pelo Id especificado.
- *     tags: [Notes]
+ *     tags: [Anotações]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -178,10 +178,10 @@ router.put('/edit/:entry_id', async function (req, res) {
 
 /**
  * @swagger
- * /note/delete/{entry_id}:
+ * /anotacoes/delete/{entry_id}:
  *   delete:
  *     summary: Delete a anotação de uma entrada.
- *     tags: [Notes]
+ *     tags: [Anotações]
  *     parameters:
  *       - in: path
  *         name: entry_id

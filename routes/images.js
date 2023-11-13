@@ -8,16 +8,16 @@ const authUtils = require('../utils/authenticationUtils')
 /**
  * @swagger
  * tags:
- *   name: Images
+ *   name: Imagens
  *   description: Manejo de Imagens do Diário
  */
 
 /**
  * @swagger
- * /image/upload/{entry_id}:
+ * /imagem/upload/{entry_id}:
  *   post:
  *     summary: Adiciona uma Imagem para uma Entrada
- *     tags: [Images]
+ *     tags: [Imagens]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -70,10 +70,10 @@ router.post('/upload/:entry_id', upload.any(), async function (req, res) {
 
 /**
  * @swagger
- * /image/get/{entry_id}/{image_id}:
+ * /imagem/get/{entry_id}/{image_id}:
  *   get:
  *     summary: Lê as Imagens de uma Entrada
- *     tags: [Images]
+ *     tags: [Imagens]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -120,10 +120,10 @@ router.post('/upload/:entry_id', upload.any(), async function (req, res) {
 
 /**
  * @swagger
- * /image/getIds/{entry_id}:
+ * /imagem/getIds/{entry_id}:
  *   get:
  *     summary: Lê os Identificadores das Imagens de uma Entrada
- *     tags: [Images]
+ *     tags: [Imagens]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -166,10 +166,10 @@ router.post('/upload/:entry_id', upload.any(), async function (req, res) {
 
 /**
  * @swagger
- * /image/delete/{entry_id}/{image_id}:
+ * /imagem/delete/{entry_id}/{image_id}:
  *   delete:
  *     summary: Deleta uma Imagem de uma entrada.
- *     tags: [Images]
+ *     tags: [Imagens]
  *     parameters:
  *       - in: path
  *         name: entry_id

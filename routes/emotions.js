@@ -7,16 +7,16 @@ const strUtils = require('../utils/stringUtils')
 /**
  * @swagger
  * tags:
- *   name: Emotions
+ *   name: Emoções
  *   description: Manejo de Emoções
  */
 
 /**
  * @swagger
- * /emotion/create:
+ * /emocao/create:
  *   post:
  *     summary: Cria uma Emoção
- *     tags: [Emotions]
+ *     tags: [Emoções]
  *     requestBody:
  *       required: true
  *       content:
@@ -75,10 +75,10 @@ router.post('/create', async (req, res) => {
 
 /**
  * @swagger
- * /emotion/delete/{emotion_id}:
+ * /emocao/delete/{emotion_id}:
  *   delete:
  *     summary: Deleta uma emoção.
- *     tags: [Emotions]
+ *     tags: [Emoções]
  *     parameters:
  *       - in: path
  *         name: emotion_id
@@ -124,10 +124,10 @@ router.delete('/delete/:id', async (req, res) => {
 
 /**
  * @swagger
- * /emotion/edit/{emotion_id}:
+ * /emocao/edit/{emotion_id}:
  *   put:
  *     summary: Altera uma emoção de um Id especificado.
- *     tags: [Emotions]
+ *     tags: [Emoções]
  *     parameters:
  *       - in: path
  *         name: emotion_id
@@ -181,10 +181,10 @@ router.put('/edit/{emotion_id}', async (req, res) => {
 
 /**
  * @swagger
- * /emotion/get/{emotion_id}:
+ * /emocao/get/{emotion_id}:
  *   get:
  *     summary: Obtem uma emoção para um Id especificado.
- *     tags: [Emotions]
+ *     tags: [Emoções]
  *     parameters:
  *       - in: path
  *         name: emotion_id
@@ -232,10 +232,10 @@ router.get('/get/:emotion_id', async (req, res) => {
 
 /**
  * @swagger
- * /emotion/getAll:
+ * /emocao/getAll:
  *   get:
  *     summary: Obtem todas as emoções.
- *     tags: [Emotions]
+ *     tags: [Emoções]
  *     responses:
  *       200:
  *         description: 'Operação realizada com Sucesso.'

@@ -23,7 +23,6 @@ const usersModel = require('./database/usersModel'),
     emotionsEntryModel = require('./database/emotionsEntryModel'),
     notesModel = require('./database/notesModel'),
     imagesModel = require('./database/imagesModel')
-    //locationsModel = require('./database/locationsModel'),
 
 // Importação das Rotas.
 const usersRoutes = require('./routes/users'),
@@ -50,12 +49,12 @@ connection.authenticate().then(() => {
 })
 
 // Inicialização das Rotas.
-app.use('/user', usersRoutes)
-app.use('/entry', entriesRoutes)
-app.use('/emotion', emotionsRoutes)
-app.use('/composition', compositionRoutes)
+app.use('/usuario', usersRoutes)
+app.use('/entrada', entriesRoutes)
+app.use('/emocao', emotionsRoutes)
+app.use('/composicao', compositionRoutes)
 app.use('/note', notesRoutes)
-app.use('/image', imagesRoutes)
+app.use('/imagem', imagesRoutes)
 
 // Inicialização do Swagger.
 const specs = swaggerJsdoc(swaggerOptions.specs);

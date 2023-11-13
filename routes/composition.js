@@ -6,16 +6,16 @@ const entryCompositionModel = require('../services/entryComposition')
 /**
  * @swagger
  * tags:
- *   name: Composition
+ *   name: Composição
  *   description: Manejo de Informações Compostas
  */
 
 /**
  * @swagger
- * /composition/entry/{entry_id}/emotion/{emotion_id}:
+ * /composicao/entrada/{entry_id}/emotion/{emotion_id}:
  *   post:
  *     summary: Agrega uma Emoção para uma Entrada
- *     tags: [Composition]
+ *     tags: [Composição]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -39,7 +39,7 @@ const entryCompositionModel = require('../services/entryComposition')
  *       500:
  *         description: 'Erro interno.'
  */
-router.post('/entry/:entry_id/emotion/:emotion_id', async (req, res) => {
+router.post('/entrada/:entry_id/emotion/:emotion_id', async (req, res) => {
     try {
         let user = authUtils.validateToken(req.headers.authorization)
 
@@ -64,10 +64,10 @@ router.post('/entry/:entry_id/emotion/:emotion_id', async (req, res) => {
 
 /**
  * @swagger
- * /composition/entry/{entry_id}/emotion/{emotion_id}:
+ * /composicao/entrada/{entry_id}/emotion/{emotion_id}:
  *   delete:
  *     summary: Remove uma Emoção de uma Entrada
- *     tags: [Composition]
+ *     tags: [Composição]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -91,7 +91,7 @@ router.post('/entry/:entry_id/emotion/:emotion_id', async (req, res) => {
  *       500:
  *         description: 'Erro interno.'
  */
- router.delete('/entry/:{entry_id}/emotion/:{emotion_id}', async (req, res) => {
+ router.delete('/entrada/:{entry_id}/emotion/:{emotion_id}', async (req, res) => {
     try {
         let user = authUtils.validateToken(req.headers.authorization)
 

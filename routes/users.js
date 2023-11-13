@@ -6,16 +6,16 @@ const strUtils = require('../utils/stringUtils')
 /**
  * @swagger
  * tags:
- *   name: Users
+ *   name: Usuarios
  *   description: Manejo de Usuários
  */
 
 /**
  * @swagger
- * /user/create:
+ * /usuario/create:
  *   post:
  *     summary: Cria um usuário
- *     tags: [Users]
+ *     tags: [Usuarios]
  *     security: []
  *     requestBody:
  *       required: true
@@ -57,10 +57,10 @@ router.post('/create', async function (req, res) {
 
 /**
  * @swagger
- * /user/validate:
+ * /usuario/validate:
  *   post:
  *     summary: Valida o Login de um Usuário
- *     tags: [Users]
+ *     tags: [Usuarios]
  *     security: []
  *     requestBody:
  *       required: true

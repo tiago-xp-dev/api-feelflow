@@ -7,16 +7,16 @@ const moment = require('moment')
 /**
  * @swagger
  * tags:
- *   name: Entries
+ *   name: Entradas
  *   description: Manejo de Entradas do Diário
  */
 
 /**
  * @swagger
- * /entry/create:
+ * /entrada/create:
  *   post:
  *     summary: Cria uma entrada
- *     tags: [Entries]
+ *     tags: [Entradas]
  *     requestBody:
  *       required: true
  *       content:
@@ -57,10 +57,10 @@ router.post('/create', async function (req, res) {
 
 /**
  * @swagger
- * /entry/delete/{entry_id}:
+ * /entrada/delete/{entry_id}:
  *   delete:
  *     summary: Delete uma entrada.
- *     tags: [Entries]
+ *     tags: [Entradas]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -107,10 +107,10 @@ router.delete('/delete/:id', async function (req, res) {
 
 /**
  * @swagger
- * /entry/edit/{entry_id}:
+ * /entrada/edit/{entry_id}:
  *   put:
  *     summary: Altera uma entrada de um usuário/ano especificado.
- *     tags: [Entries]
+ *     tags: [Entradas]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -166,10 +166,10 @@ router.put('/edit/:entry_id', async function (req, res) {
 
 /**
  * @swagger
- * /entry/get/{entry_id}:
+ * /entrada/get/{entry_id}:
  *   get:
  *     summary: Obtem a entrada de um identificador especificado.
- *     tags: [Entries]
+ *     tags: [Entradas]
  *     parameters:
  *       - in: path
  *         name: entry_id
@@ -217,10 +217,10 @@ router.get('/get/:entry_id', async function (req, res) {
 
 /**
  * @swagger
- * /entry/getAll/{year}:
+ * /entrada/getAll/{year}:
  *   get:
  *     summary: Obtem todas as entradas para um usuário/ano especificados.
- *     tags: [Entries]
+ *     tags: [Entradas]
  *     parameters:
  *       - in: path
  *         name: year
